@@ -1,0 +1,31 @@
+﻿@page "/"
+@inject FeedService FS
+
+<PageTitle>Index</PageTitle>
+
+<div class="main">
+    @if(feeds is null)
+    {
+        <p>Loading</p>
+    }
+    else
+    {
+        <div class="feeds">
+        @foreach(var feed in feeds)
+        {
+            <FeedCard feed="@feed"/>
+        }
+        </div>
+    }
+</div>
+
+@code {
+    private HashSet<Feed> feeds;
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() =>
+        {
+            feeds = FS.Feeds;
+        });
+    }
+}

@@ -1,0 +1,9 @@
+﻿<div class="item">
+    <p><a href="@item.Link">@item.Title</a></p>
+    <p>@item.PubDate</p>
+    <p class="spoiler">@item.Description</p>
+</div>
+
+@code {
+    [Parameter] public Item item { get; set; }
+}

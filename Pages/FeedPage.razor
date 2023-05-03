@@ -1,0 +1,22 @@
+﻿@page "/feeds/{feedId}"
+@inject FeedService FS
+
+@if(feed is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <FeedComponent feed="@feed"/>
+}
+
+@code {
+    [Parameter] public string feedId { get; set; }
+    public Feed feed;
+
+    protected override async Task OnInitializedAsync()
+    {
+        feed = await Task.Run(() => FS.GetFeedByGuid(feedId));
+    }
+
+}

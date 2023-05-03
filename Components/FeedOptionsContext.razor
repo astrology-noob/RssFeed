@@ -1,0 +1,45 @@
+﻿<div>
+    <form @onsubmit="SaveFeedOptions">
+        <div class="form-group">
+            <label for="rssLink">RSS лента
+                @if (invalidRssLink)
+                {
+                    <p>Нельзя получить ленту по данному адресу</p>
+                }
+                <input type="text" class="form-control" name="rssLink" placeholder="RSS Feed link" @bind-value="rssLink"/>
+            </label>
+            <label for="updateSpan">Частота обновления
+                <input type="number" class="form-control" name="updateSpan" placeholder="10" @bind-value="updateSpan"/>
+            </label>
+            <input type="submit" value="Сохранить"/>
+        </div>
+    </form>
+</div>
+
+@code {
+    public Feed feed { get; set; }
+
+    private string rssLink = string.Empty;
+    private int updateSpan;
+    private bool invalidRssLink;
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private async Task SaveFeedOptions()
+    {
+        using (var httpClient = new HttpClient())
+        {
+            using (var result = await httpClient.GetAsync(rssLink))
+            {
+                if (!result.IsSuccessStatusCode)
+                {
+                    invalidRssLink = true;
+                    return;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,21 @@
+﻿@if(feed.Items.Count == 0)
+{
+    <p>Loading....</p>
+}
+else {
+    <div class="feed">
+        @foreach(var item in feed.Items)
+        {
+            <ItemComponent item="item"/>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public Feed feed { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await feed.UpdateItems();
+    }
+}
